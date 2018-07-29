@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.cenfotec.encryption.enums.CipherTypeEnum;
-import com.cenfotec.encryption.enums.EncryptionTypeEnum;
+
 import com.cenfotec.encryption.manager.EncryptionManager;
 import com.cenfotec.encryption.manager.EncryptionManagerFactory;
 
@@ -86,7 +86,9 @@ public class EncryptionSampleApplication {
 			String keyName = br.readLine();
 			System.out.println("Message name: ");
 			String messageName = br.readLine();
-			encryptManager.decryptMessage(messageName, keyName);			
+			String message = encryptManager.decryptMessage(messageName, keyName);
+			System.out.println("El mensaje era:");
+			System.out.println(message);
 		}
 		if(option == 4) {
 			initEncryptionManager();

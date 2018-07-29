@@ -6,8 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Base64.Decoder;
+
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 
 
 public abstract class EncryptionManager {
@@ -16,7 +22,7 @@ public abstract class EncryptionManager {
 	protected final String MESSAGE_ENCRYPT_EXTENSION = ".encript";
 	public abstract void createKey(String name) throws Exception;
 	public abstract void encryptMessage(String messageName, String message, String keyName) throws Exception;
-	public abstract void decryptMessage(String messageName, String keyName) throws Exception;
+	public abstract String decryptMessage(String messageName, String keyName) throws Exception;
 	protected final void writeBytesFile(String name, byte[] content, String type) throws FileNotFoundException, IOException {
 		FileOutputStream fos = new FileOutputStream(Path + name + type);
 		fos.write(content);
@@ -33,5 +39,11 @@ public abstract class EncryptionManager {
         Decoder oneDecoder = Base64.getDecoder();
 	    reader.close();
 		return oneDecoder.decode(bytes);
+	}
+	protected Cipher setCipher(byte[] key, int cipherMode ) throws Exception {
+		Cipher cipher = Cipher.getInstance("AES");
+		SecretKeySpec k = new SecretKeySpec(key,"AES");
+		cipher.init(cipherMode, k);
+		return cipher;
 	}
 }
