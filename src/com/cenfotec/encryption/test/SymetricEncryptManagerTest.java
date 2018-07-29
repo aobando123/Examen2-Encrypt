@@ -2,12 +2,11 @@ package com.cenfotec.encryption.test;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.cenfotec.encryption.manager.SymetricEncryptManager;
+import com.cenfotec.encryption.utils.FindFileUtility;
 
 public class SymetricEncryptManagerTest {
 
@@ -19,20 +18,19 @@ public class SymetricEncryptManagerTest {
 	public static void setUpBeforeClass() throws Exception {
 
 		symetricEncrypt = new SymetricEncryptManager();	
-    	
 	}
 
 	@Test
 	public void testGenerateKey() throws Exception {
 		symetricEncrypt.createKey(keyName);
-		assertTrue(findFile(keyName, ".key"));
+		assertTrue(FindFileUtility.FindFile("symetric",keyName, ".key"));
 	}
 	
 	@Test
 	public void testEncryptFile() throws Exception {
 		symetricEncrypt.createKey(keyName);
 		symetricEncrypt.encryptMessage(keyMessageName, keyMessage, keyName);
-		assertTrue(findFile(keyMessageName, ".encript"));
+		assertTrue(FindFileUtility.FindFile("symetric",keyMessageName, ".encript"));
 	}
 	
 	@Test 
@@ -45,14 +43,6 @@ public class SymetricEncryptManagerTest {
 
 	
 	
-	private boolean findFile( String fileName, String extension) {
-		try {
-			File keyFile = new File("C:\\encrypt\\symetric\\" + fileName + extension );
-			return true;
-		} catch(Exception e) {
-			return false;
-		}
-		
-	}
+
 
 }

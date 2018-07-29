@@ -40,10 +40,5 @@ public abstract class EncryptionManager {
 	    reader.close();
 		return oneDecoder.decode(bytes);
 	}
-	protected Cipher setCipher(byte[] key, int cipherMode ) throws Exception {
-		Cipher cipher = Cipher.getInstance("AES");
-		SecretKeySpec k = new SecretKeySpec(key,"AES");
-		cipher.init(cipherMode, k);
-		return cipher;
-	}
+
 }

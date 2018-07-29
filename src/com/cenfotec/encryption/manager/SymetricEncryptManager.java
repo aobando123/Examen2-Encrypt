@@ -11,6 +11,7 @@ import java.util.Base64;
 import java.util.Base64.Encoder;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 
 public class SymetricEncryptManager extends EncryptionManager{
@@ -74,5 +75,11 @@ public class SymetricEncryptManager extends EncryptionManager{
 		    br.close();
 		}
 		return everything.getBytes(StandardCharsets.UTF_8);
+	}
+	private Cipher setCipher(byte[] key, int cipherMode ) throws Exception {
+		Cipher cipher = Cipher.getInstance("AES");
+		SecretKeySpec k = new SecretKeySpec(key,"AES");
+		cipher.init(cipherMode, k);
+		return cipher;
 	}
 }
