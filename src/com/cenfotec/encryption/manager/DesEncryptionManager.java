@@ -6,14 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+
 import java.util.Base64;
 import java.util.Base64.Encoder;
 
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
+
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
@@ -36,8 +34,7 @@ public class DesEncryptionManager extends EncryptionManager{
 	@Override
 	public void encryptMessage(String messageName, String message, String keyName) throws Exception {
 		byte[] key = readKeyFile(keyName);
-		DESKeySpec desKey = new DESKeySpec(key);
-		Cipher cipher = getCipher(key);
+		Cipher cipher = getCipher(key, Cipher.ENCRYPT_MODE);
 		byte[] encryptedData = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
 	    Encoder oneEncoder = Base64.getEncoder();
 	    encryptedData = oneEncoder.encode(encryptedData);
@@ -50,19 +47,19 @@ public class DesEncryptionManager extends EncryptionManager{
 	public String decryptMessage(String messageName, String keyName) throws Exception {
 		byte[] key = readKeyFile(keyName);
 		byte[] encryptedMessage = readMessageFile(messageName);
-		Cipher cipher = getCipher(key);
+		Cipher cipher = getCipher(key, Cipher.DECRYPT_MODE);
 		byte[] DecryptedData = cipher.doFinal(encryptedMessage);
 		String message = new String(DecryptedData, StandardCharsets.UTF_8);
 		return message;
 		
 	}
 
-	private Cipher getCipher(byte[] key) throws Exception {
+	private Cipher getCipher(byte[] key, int cipherMode) throws Exception {
 		Cipher cipher = Cipher.getInstance("DES");
 		DESKeySpec desKey = new DESKeySpec(key);
 		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
 		SecretKey securekey = keyFactory.generateSecret(desKey);
-		cipher.init(Cipher.DECRYPT_MODE, securekey);
+		cipher.init(cipherMode, securekey);
 		return cipher;
 	}
 	private byte[] readKeyFile(String keyName) throws FileNotFoundException, IOException {
