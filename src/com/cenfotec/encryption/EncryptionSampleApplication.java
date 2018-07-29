@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import com.cenfotec.encryption.enums.CipherTypeEnum;
 import com.cenfotec.encryption.enums.EncryptionTypeEnum;
 import com.cenfotec.encryption.manager.EncryptionManager;
+import com.cenfotec.encryption.manager.EncryptionManagerFactory;
 
 
 
@@ -17,52 +18,38 @@ public class EncryptionSampleApplication {
 	
 	
 	public static void main(String[] args) throws Exception {
-		System.out.println("Choose your preferred encryptionType");
-		System.out.println("Choose your preferred encryptionType");
+		initEncryptionManager();
 		int option = 0;
 		do {
     		System.out.println("1.Create key");
         	System.out.println("2.Encript Message");
         	System.out.println("3.Decrypt Message");
-        	System.out.println("4.Exit ");
+        	System.out.println("4.Change Encryption Method");
+        	System.out.println("5.Exit ");
         	option = Integer.parseInt(br.readLine());
-        	if (option >= 1 && option <= 3){
+        	if (option >= 1 && option <= 4){
         		executeAction(option);
         	}
-    	} while (option != 4);
+    	} while (option != 5);
 
     	
     }
 	
 	private static void initEncryptionManager() throws Exception{
-		int option;
-		CipherTypeEnum cipherType;
-		EncryptionTypeEnum encryptType = getEncryptionType();
-		
+		CipherTypeEnum cipherType = getCipherType();
+		encryptManager =  EncryptionManagerFactory.create( cipherType);
 		
 	}
 
-	private static EncryptionTypeEnum getEncryptionType() throws IOException {
-		int option;
-		
-		System.out.println("Choose your preferred encryptionType");
-		System.out.println("1. Asymetric");
-		System.out.println("2. Symetric");
-		option = Integer.parseInt(br.readLine());
-		if(option == 1) {
-			return EncryptionTypeEnum.Asymetric;
-		} else {
-			return EncryptionTypeEnum.Symetric;
-		}
-	}
 	private static CipherTypeEnum getCipherType() throws IOException {
 		int option;
-		
-		System.out.println("Choose your preferred encryptionType");
+		do {
+		System.out.println("Choose your preferred encryption type");
 		System.out.println("1. AES");
 		System.out.println("2. RSA");
 		System.out.println("3. DES");
 		option = Integer.parseInt(br.readLine());
+		} while(option < 0 && option > 4);
 		switch (option) {
 		case 1:
 			
@@ -100,6 +87,9 @@ public class EncryptionSampleApplication {
 			System.out.println("Message name: ");
 			String messageName = br.readLine();
 			encryptManager.decryptMessage(messageName, keyName);			
+		}
+		if(option == 4) {
+			initEncryptionManager();
 		}
 	}
 }

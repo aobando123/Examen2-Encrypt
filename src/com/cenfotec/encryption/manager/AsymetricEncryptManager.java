@@ -2,6 +2,7 @@ package com.cenfotec.encryption.manager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,21 +24,20 @@ import java.util.Base64.Encoder;
 
 import javax.crypto.Cipher;
 
-import com.cenfotec.encryption.enums.CipherTypeEnum;
-
 public class AsymetricEncryptManager extends EncryptionManager{
 	private final String PUBLIC = "public";
 	private final String PRIVATE = "private";
 	
-	public AsymetricEncryptManager(CipherTypeEnum cipherEnum) {
-		CipherType = cipherEnum;
+	public AsymetricEncryptManager() {
+		
 		Path = "C:/encrypt/asymetric/";
+		new File("C:\\encrypt\\asymetric").mkdirs();
 	}
 	
 	@Override
 	public void createKey(String name) throws Exception {
-		KeyPairGenerator kpg = KeyPairGenerator.getInstance(CipherType.toString());
-		KeyFactory fact = KeyFactory.getInstance(CipherType.toString());
+		KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+		KeyFactory fact = KeyFactory.getInstance("RSA");
 		kpg.initialize(2048);
 		KeyPair kp = kpg.genKeyPair();
 		RSAPublicKeySpec pub = fact.getKeySpec(kp.getPublic(),

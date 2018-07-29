@@ -9,13 +9,11 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Base64.Decoder;
 
-import com.cenfotec.encryption.enums.CipherTypeEnum;
 
 public abstract class EncryptionManager {
 	protected String Path;
 	protected final String KEY_EXTENSION = ".key";
 	protected final String MESSAGE_ENCRYPT_EXTENSION = ".encript";
-	protected CipherTypeEnum CipherType; 
 	public abstract void createKey(String name) throws Exception;
 	public abstract void encryptMessage(String messageName, String message, String keyName) throws Exception;
 	public abstract void decryptMessage(String messageName, String keyName) throws Exception;
